@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project farmaciaOO -->
-<!-- Saved: 2024-10-20, 09:27:58 -->
+<!-- Saved: 2024-10-20, 13:22:39 -->
 <!-- Copyright (C) 2024 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -19,6 +19,7 @@
     <Source>models/avaliacao.py</Source>
     <Source>models/clientes.py</Source>
     <Source>models/grafico_avaliacao.py</Source>
+    <Source>models/grafico_levusuario.py</Source>
     <Source>models/produtos.py</Source>
     <Source>models/usuario.py</Source>
     <Source>testeunitario/testeclienteusuario.py</Source>
@@ -33,6 +34,7 @@
     <Other>templates/debugar.html</Other>
     <Other>templates/graficoavaliacao.html</Other>
     <Other>templates/inseri_usuario.html</Other>
+    <Other>templates/levusuario.html</Other>
   </Others>
   <Vcs>
     <VcsType>Git</VcsType>

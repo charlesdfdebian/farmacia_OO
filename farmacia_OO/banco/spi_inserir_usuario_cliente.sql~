@@ -1,12 +1,12 @@
 DELIMITER //
 
+
 CREATE PROCEDURE spi_inserir_usuario_cliente(
     IN p_nome VARCHAR(100),
     IN p_email VARCHAR(100),
     IN p_senha CHAR(32),
     IN p_nomecliente  VARCHAR(100),
-    IN p_telefone VARCHAR(20)
-)
+    IN p_telefone VARCHAR(20))
 
 BEGIN
     DECLARE v_usuario_id INT;
@@ -24,6 +24,7 @@ BEGIN
  	   SET v_usuario_id = (SELECT COALESCE(MAX(id) + 1, 1) AS proximo_id FROM Usuario);
    	SET v_permissao_id = (select COALESCE(MAX(id) + 1, 1) AS proximo_id from UsuarioPermissao );
     	SET v_cliente_id = (select COALESCE(MAX(IDCliente) + 1, 1 ) from Clientes );    
+
 
     	-- Inserir o usuário
     	INSERT INTO Usuario (id,nome, email,senha,ativo,datacriacao) VALUES (v_usuario_id,	p_nome, p_email,p_senha,1,now());

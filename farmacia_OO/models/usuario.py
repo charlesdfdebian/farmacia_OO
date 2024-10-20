@@ -22,7 +22,7 @@ class Usuario:
         """Salva o usuário no banco de dados."""
         try:
             cursor = db.cursor()
-            cursor.callproc('spi_inserir_usuario_cliente', (self.nome, self.email, self.senha,  self.nome_cliente, self.telefone))
+            cursor.callproc('', (self.nome, self.email, self.senha,  self.nome_cliente, self.telefone))
             db.cursor.commit()
             
         except mysql.connector.Error as err:
@@ -64,6 +64,20 @@ class Usuario:
             cursor.close()
             db.close()
 
+    def obter_levusuario(db):
+        try: 
+                cursor = db.cursor()
+
+                query = """
+                    SELECT p.nome,COUNT(up.permissao_id) AS qtdeUsuario FROM Permissao p 
+                    INNER JOIN UsuarioPermissao up ON up.permissao_id = p.id
+                    GROUP BY p.nome
+                    """
+                cursor.execute(query)
+                return cursor.fetchall()           
+        except mysql.connector.Error as err:
+            print(f"Erro: {err}") 
+            
     @staticmethod
     def _gerar_senha_md5_static(senha):
         """Gera o hash MD5 de uma senha para comparação."""

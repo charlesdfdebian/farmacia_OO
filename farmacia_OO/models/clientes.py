@@ -20,12 +20,14 @@ class Clientes(Usuario):
         return md5_hash.hexdigest()
         
     # Método para salvar cliente no banco de dados
-    def salvar(self, db):
+    def salvar(self, db, permissao=None):
         """Salva o usuário no banco de dados."""
         try:
             cursor = db.cursor()
-            
-            cursor.callproc('spi_inserir_usuario_cliente', (self.login, self.email, self.senha,  self.nomecliente, self.telefonecliente))
+            if permissao is not None:
+              cursor.callproc('spi_inserir_usuario', (self.login, self.email, self.senha,  self.nomecliente, self.telefonecliente, permissao))
+            else:
+              cursor.callproc('spi_inserir_usuario_cliente', (self.login, self.email, self.senha,  self.nomecliente, self.telefonecliente))
         except mysql.connector.Error as err:
             print(f"Erro: {err}")
         finally:

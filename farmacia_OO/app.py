@@ -6,6 +6,8 @@ from models.produtos import Produtos
 from models.usuario  import Usuario
 from models.avaliacao  import Avaliacao
 from models.grafico_avaliacao import GraficoAvaliacao
+from models.grafico_levusuario import GraficoLevUsuario
+
 
 
 
@@ -80,7 +82,27 @@ def plot_png():
     response = make_response(img.getvalue())
     response.headers['Content-Type'] = 'image/png'
     return response
-       
+
+# Rota para exibir o gráfico de avaliação
+@app.route('/levusuario')
+def levusuario():
+    return render_template('levusuario.html')
+    
+@app.route('/levusuario.png')
+def levusuario_png():
+    # Conectar ao banco de dados e obter os dados de avaliação
+    db = get_db_connection()
+    usuario = Usuario.obter_levusuario(db)
+
+    # Gerar o gráfico com os dados do MySQL
+    grafico = GraficoLevUsuario(usuario)
+    img = grafico.gerar_grafico()
+
+    # Retornar o gráfico como imagem
+    response = make_response(img.getvalue())
+    response.headers['Content-Type'] = 'image/png'
+    return response
+    
 ## Página de login
 @app.route('/login')
 def login():
@@ -154,11 +176,12 @@ def inseri_usuario():
         senha = request.form['senha']
         nomecompleto = request.form['nomecompleto']
         telefone = request.form['telefone']
-
+        status = request.form['status']
+        
         # Cria um objeto Customer e salva no banco de dados
         clientes = Clientes( None, None, nome, email, senha, None, None, nomecompleto, telefone)        
         db = get_db_connection()
-        clientes.salvar(db)
+        clientes.salvar(db, status)
         db.close()
 
         return redirect(url_for('success', message='Usuário cadastrado com sucesso!'))
