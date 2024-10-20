@@ -49,14 +49,15 @@ class Produtos:
            
              cursor = db.cursor()
             
-             sql="SELECT max(id)+1 FROM produtos"
+             sql="SELECT COALESCE(MAX(id) + 1, 1) FROM produtos"
              cursor.execute(sql)
              produtos = cursor.fetchone()
              
              if produtos:
                  maximoID = produtos[0]
             
-             return maximoID   
+                 return maximoID   
+             return None
              
          except mysql.connector.Error as err:
             print(f"Erro: {err}")

@@ -59,7 +59,34 @@ class Clientes(Usuario):
         finally:
             cursor.close()
             db.close()
+    
+    @staticmethod
+    def retornaIDcliente(  username, db):
+        """Retorna o clinete."""
+        try:
+            cursor = db.cursor()
 
+
+            sql = """
+            SELECT c.IDCliente  AS IDCliente FROM Clientes c
+            INNER JOIN Usuario u ON c.usuario_id=u.id
+            WHERE u.nome = %s
+            """
+            cursor.execute(sql, (username,))
+            resultado = cursor.fetchone()
+
+            if resultado:
+                    cliente=resultado[0]
+
+                    return  cliente
+            return None
+
+        except mysql.connector.Error as err:
+            print(f"Erro: {err}")
+        finally:
+            cursor.close()
+            db.close()
+            
     @staticmethod
     def _gerar_senha_md5_static(senha):
         """Gera o hash MD5 de uma senha para comparação."""

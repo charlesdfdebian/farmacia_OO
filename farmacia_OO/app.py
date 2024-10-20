@@ -4,6 +4,8 @@ from db_config import get_db_connection
 from models.clientes import Clientes
 from models.produtos import Produtos
 from models.usuario  import Usuario
+from models.avaliacao  import Avaliacao
+
 
 
 app = Flask(__name__)
@@ -19,6 +21,44 @@ def home():
 def sobre():
        return render_template('sobre.html')
 
+@app.route('/debugar')
+def debugar():
+       return render_template('debugar.html')
+
+@app.route('/avaliacao', methods=['GET', 'POST'])
+def avaliacao():
+    
+    if 'usuario' in session:
+        
+        db = get_db_connection()
+
+
+        cliente_logado=session['usuario'] 
+        idcliente_logado = Clientes.retornaIDcliente(cliente_logado, db)
+        
+#        if idcliente_logado:
+#            return render_template('avaliacao.html', idcliente_logado=idcliente_logado)
+#        return "Cliente não encontrado " + cliente_logado, 404
+#        
+        if request.method == 'POST':
+             tpavaliacao = request.form['avaliacao']
+            # A classe Avaliacao deve ser importada corretamente
+             avaliacao = Avaliacao(None, tpavaliacao, None, None,'1',None,None,None,idcliente_logado, None, None, None)
+             db = get_db_connection()
+             avaliacao.salvar(db)
+             #teste=avaliacao.proximaavaliacao(db)
+             #return teste
+             db.close()
+            # Aqui você deve chamar o método para salvar a avaliação no banco de dados
+             #return render_template('debugar.html', avaliacao=avaliacao)
+             #return redirect(url_for('success', message='Avaliação cadastrada com sucesso!'+str(avaliacao)))
+             return redirect(url_for('success', message='Avaliação cadastrada com sucesso!'))
+            
+        # Renderize a página do formulário para o método GET
+        return render_template('avaliacao.html')
+
+    return render_template('index.html')
+       
 ## Página de login
 @app.route('/login')
 def login():
@@ -34,13 +74,16 @@ def verificar_login():
     usuario = Usuario.verificar_login( username, senha, db)
     
     # Verificar login
-    if usuario != None:
-        #return render_template('result.html', message="Login bem-sucedido!")
-        session['usuario'] = usuario
+    if usuario[0] != None:
+        session['usuario'] = usuario[1]
         if 'usuario' in session:
-           # return f'Você está logado como {session["usuario"]}. <br><a href="/logout">Sair</a>'
-            return   render_template('funcionario.html')
-
+            if usuario[2]==1:
+                return   render_template('admin.html')
+            elif  usuario[2]==2:
+                return   render_template('funcionario.html')
+            else:
+                return   render_template('principal.html')
+       
         return 'Você não está logado. <br><a href="/login">Login</a>'
 
     else:
@@ -76,7 +119,27 @@ def inseri_clientes():
         return redirect(url_for('success', message='Cliente cadastrado com sucesso!'))
     return render_template('inseri_clientes.html')
   #return render_template('index.html')
+  # Cadastro de clientes
+@app.route('/inseri_usuario', methods=['GET', 'POST'])
+def inseri_usuario():
+  #if 'usuario' in session:
   
+    if request.method == 'POST':
+        # Coleta os dados do formulário
+        nome = request.form['nome']
+        email = request.form['email']
+        senha = request.form['senha']
+        nomecompleto = request.form['nomecompleto']
+        telefone = request.form['telefone']
+
+        # Cria um objeto Customer e salva no banco de dados
+        clientes = Clientes( None, None, nome, email, senha, None, None, nomecompleto, telefone)        
+        db = get_db_connection()
+        clientes.salvar(db)
+        db.close()
+
+        return redirect(url_for('success', message='Usuário cadastrado com sucesso!'))
+    return render_template('inseri_usuario.html')
 
 # Cadastro de produtos
 @app.route('/inseri_produtos', methods=['GET', 'POST'])

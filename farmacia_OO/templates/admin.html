@@ -12,10 +12,10 @@
     <div class="menu-lateral">
         <h2>Menu</h2>
         <ul>
-           <li> <a href="https://www.globo.com" target="iframe-conteudo">Produtos</a>
+           <li> <a href="https://www.globo.com" target="iframe-conteudo">Usuário</a>
                 <!-- Subnível -->
                 <ul>
-                    <li><a href="{{ url_for('inseri_produtos') }}" target="iframe-conteudo">Cadastrar</a></li>
+                    <li><a href="{{ url_for('inseri_usuario') }}" target="iframe-conteudo">Cadastrar</a></li>
                     <li><a href="{{ url_for('listaproduto') }}" target="iframe-conteudo">Alterar/Excluir</a></li>
                 </ul>
         </li>
@@ -28,7 +28,7 @@
     <div class="conteudo">
       <!--  <img src="https://via.placeholder.com/200X400" alt="Imagem Topo" class="imagem-topo">-->
         <h1><center>Bem-vindo à Farmácia Tomou Balão</center></h1>
-        <p>Prezado Colaborador obrigado por fazer parte do nosso time.</p>
+        <p>Este é um exemplo de uma página com um menu lateral à esquerda, uma imagem no topo e um iframe abaixo.</p>
         Você está logado como {{session["usuario"]}}. <br><a href="/logout">Sair</a>
         
         <div class="iframe-container">

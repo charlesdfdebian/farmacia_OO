@@ -38,18 +38,23 @@ class Usuario:
             cursor = db.cursor()
 
 
-            sql = "SELECT senha,nome FROM Usuario WHERE nome = %s"
+            sql = """
+                SELECT u.senha,u.nome,up.permissao_id FROM Usuario u
+                inner join UsuarioPermissao up on u.id = up.usuario_id
+                where u.nome= %s
+                """
             cursor.execute(sql, (username,))
             resultado = cursor.fetchone()
 
             if resultado:
                 senha_md5_banco = resultado[0]
                 usuario=resultado[1]
+                permissao = resultado[2]
                 
                 senha_md5_input = Usuario._gerar_senha_md5_static(senha)
 
                 if  senha_md5_banco == senha_md5_input:
-                     return  usuario  
+                     return  [senha_md5_banco, usuario,permissao ]  
                 else:
                      return None
 

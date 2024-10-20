@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project farmaciaOO -->
-<!-- Saved: 2024-10-18, 02:35:34 -->
+<!-- Saved: 2024-10-19, 20:43:36 -->
 <!-- Copyright (C) 2024 ,  -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -16,6 +16,7 @@
     <Source>__init__.py</Source>
     <Source>app.py</Source>
     <Source>db_config.py</Source>
+    <Source>models/avaliacao.py</Source>
     <Source>models/clientes.py</Source>
     <Source>models/produtos.py</Source>
     <Source>models/usuario.py</Source>
@@ -24,7 +25,12 @@
   <Others>
     <Other>famarcia.e4p</Other>
     <Other>static</Other>
+    <Other>static/script.js</Other>
     <Other>templates</Other>
+    <Other>templates/admin.html</Other>
+    <Other>templates/avaliacao.html</Other>
+    <Other>templates/debugar.html</Other>
+    <Other>templates/inseri_usuario.html</Other>
   </Others>
   <Vcs>
     <VcsType>Git</VcsType>

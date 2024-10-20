@@ -15,14 +15,14 @@
         <a href="{{ url_for('sobre') }}" target="iframe-conteudo">Sobre</a>
         <a href="https://www.example.com/servicos" target="iframe-conteudo">Serviços</a>
          <a href="{{ url_for('login') }}" >Login</a>
-        <a href="https://www.example.com/contato" target="iframe-conteudo">Contato</a>
+        <a href="{{ url_for('avaliacao') }}" target="iframe-conteudo">Avaliação</a>
     </div>
 
     <div class="conteudo">
       <!--  <img src="https://via.placeholder.com/200X400" alt="Imagem Topo" class="imagem-topo">-->
-        <h1><center>Bem-vindo à Farmácia Tomou Balão</center></h1>
+         <h1><center>Bem-vindo à Farmácia Tomou Balão</center></h1>
         <p>Este é um exemplo de uma página com um menu lateral à esquerda, uma imagem no topo e um iframe abaixo.</p>
-        
+        Você está logado como {{session["usuario"]}}. <br><a href="/logout">Sair</a>        
         <div class="iframe-container">
             <iframe name="iframe-conteudo" src="https://www.example.com" title="Exemplo de iFrame"></iframe>
         </div>
