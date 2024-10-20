@@ -54,7 +54,17 @@ class Avaliacao(Clientes):
              return None
              
          except mysql.connector.Error as err:
-            print(f"Erro: {err}")            
+            print(f"Erro: {err}")      
+            
+    def obter_avaliacoes(db):
+        try: 
+                cursor = db.cursor()
+
+                query = "SELECT avaliacao, count(avaliacao) FROM avaliacao GROUP BY avaliacao"
+                cursor.execute(query)
+                return cursor.fetchall()           
+        except mysql.connector.Error as err:
+            print(f"Erro: {err}") 
             
     def teste(self):
         teste= "deu certo porra"

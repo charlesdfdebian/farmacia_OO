@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, make_response
 #import mysql.connector
 from db_config import get_db_connection
 from models.clientes import Clientes
 from models.produtos import Produtos
 from models.usuario  import Usuario
 from models.avaliacao  import Avaliacao
+from models.grafico_avaliacao import GraficoAvaliacao
 
 
 
@@ -47,6 +48,7 @@ def avaliacao():
              db = get_db_connection()
              avaliacao.salvar(db)
              #teste=avaliacao.proximaavaliacao(db)
+             #retorna para testar se entrou
              #return teste
              db.close()
             # Aqui você deve chamar o método para salvar a avaliação no banco de dados
@@ -58,6 +60,26 @@ def avaliacao():
         return render_template('avaliacao.html')
 
     return render_template('index.html')
+
+# Rota para exibir o gráfico de avaliação
+@app.route('/graficoavaliacao')
+def graficoavaliacao():
+    return render_template('graficoavaliacao.html')
+    
+@app.route('/plot.png')
+def plot_png():
+    # Conectar ao banco de dados e obter os dados de avaliação
+    db = get_db_connection()
+    avaliacoes = Avaliacao.obter_avaliacoes(db)
+
+    # Gerar o gráfico com os dados do MySQL
+    grafico = GraficoAvaliacao(avaliacoes)
+    img = grafico.gerar_grafico()
+
+    # Retornar o gráfico como imagem
+    response = make_response(img.getvalue())
+    response.headers['Content-Type'] = 'image/png'
+    return response
        
 ## Página de login
 @app.route('/login')
@@ -74,7 +96,8 @@ def verificar_login():
     usuario = Usuario.verificar_login( username, senha, db)
     
     # Verificar login
-    if usuario[0] != None:
+    if usuario is not None and usuario[0] is not None:
+
         session['usuario'] = usuario[1]
         if 'usuario' in session:
             if usuario[2]==1:
